@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPOG - Curso de Automação com N8N</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Biblioteca para renderizar Markdown -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.2/marked.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #B3191F;
+            --secondary-color: #93141A;
+            --accent-color: #495057;
+            --text-color: #212529;
+            --light-gray: #f8f9fa;
+            --white: #ffffff;
+            --border-color: #dee2e6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Lato', sans-serif;
+            line-height: 1.7;
+            color: var(--text-color);
+            background-color: var(--white);
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+        }
+        
+        .header {
+            background: var(--primary-color);
+            color: var(--white);
+            padding: 1rem 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .nav {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        
+        .nav-links a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--light-gray);
+            opacity: 0.9;
+        }
+        
+        .main-content {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 4rem 20px;
+        }
+        
+        .content-section {
+            padding-right: 0;
+        }
+        
+        .hero {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--white);
+            padding: 5rem 0;
+            text-align: center;
+            margin-bottom: 0;
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        
+        .hero p {
+            font-size: 1.25rem;
+            max-width: 650px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+        
+        .section {
+            margin-bottom: 4rem;
+            text-align: center;
+        }
+        
+        .section h2 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            font-size: 2.2rem;
+            font-weight: 700;
+        }
+        
+        .section p {
+            margin-bottom: 1rem;
+            max-width: 720px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .feature-card {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            border-top: 4px solid var(--primary-color);
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-align: center;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+        }
+        
+        .feature-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            font-size: 1.25rem;
+        }
+        
+        .cta-button {
+            background: var(--primary-color);
+            color: var(--white);
+            padding: 14px 35px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            margin: 1.5rem 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+            background: var(--secondary-color);
+        }
+        
+        /* Chat Widget Styles */
+        .chat-widget {
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            width: 400px;
+            z-index: 1000;
+            background: var(--white);
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+            overflow: hidden;
+            max-height: 600px;
+            transform-origin: bottom right;
+            transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .chat-widget.hidden {
+            opacity: 0;
+            transform: scale(0.9);
+            pointer-events: none;
+        }
+        
+        .chat-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--white);
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .chat-header h3 {
+            margin: 0;
+            font-size: 1.1rem;
+        }
+
+        .chat-close-button {
+            background: none;
+            border: none;
+            color: var(--white);
+            font-size: 1.5rem;
+            cursor: pointer;
+            line-height: 1;
+            opacity: 0.8;
+            transition: opacity 0.2s;
+        }
+
+        .chat-close-button:hover {
+            opacity: 1;
+        }
+        
+        .chat-messages {
+            height: 350px;
+            overflow-y: auto;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            background: var(--light-gray);
+        }
+        
+        .message {
+            max-width: 85%;
+            padding: 10px 15px;
+            border-radius: 18px;
+            word-wrap: break-word;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        
+        /* Estilos específicos para markdown dentro das mensagens */
+        .message h1, .message h2, .message h3 {
+            margin: 0.5em 0 0.3em 0;
+            font-size: 1em;
+            font-weight: bold;
+        }
+        
+        .message p {
+            margin: 0.5em 0;
+        }
+        
+        .message ul, .message ol {
+            margin: 0.5em 0;
+            padding-left: 1.2em;
+        }
+        
+        .message li {
+            margin: 0.2em 0;
+        }
+        
+        .message strong {
+            font-weight: bold;
+        }
+        
+        .message em {
+            font-style: italic;
+        }
+        
+        .message code {
+            background: rgba(0,0,0,0.08);
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+        }
+        
+        .message pre {
+            background: rgba(0,0,0,0.08);
+            padding: 8px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 0.5em 0;
+        }
+        
+        .message pre code {
+            background: none;
+            padding: 0;
+        }
+        
+        .user-message {
+            background: var(--primary-color);
+            color: var(--white);
+            align-self: flex-end;
+        }
+        
+        .bot-message {
+            background: var(--white);
+            color: var(--text-color);
+            align-self: flex-start;
+            border: 1px solid var(--border-color);
+        }
+        
+        .chat-input {
+            display: flex;
+            padding: 1rem;
+            border-top: 1px solid var(--border-color);
+            background: var(--white);
+        }
+        
+        .chat-input input {
+            flex: 1;
+            padding: 10px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            outline: none;
+            font-size: 0.9rem;
+            transition: border-color 0.3s;
+        }
+
+        .chat-input input:focus {
+            border-color: var(--primary-color);
+        }
+        
+        .chat-input button {
+            margin-left: 8px;
+            padding: 10px 18px;
+            background: var(--primary-color);
+            color: var(--white);
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+        
+        .chat-input button:hover {
+            background: var(--secondary-color);
+        }
+
+        .chat-toggle-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--white);
+            border: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .chat-toggle-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+        }
+        
+        .typing {
+            padding: 8px 12px;
+            background: var(--white);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            max-width: 85%;
+            align-self: flex-start;
+            font-style: italic;
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+        
+        .footer {
+            background: var(--text-color);
+            color: var(--white);
+            text-align: center;
+            padding: 3rem 0;
+            margin-top: 4rem;
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+                padding: 2rem 20px;
+            }
+            
+            .content-section {
+                padding-right: 0;
+            }
+            
+            .hero {
+                padding: 4rem 0;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .nav {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .nav-links {
+                gap: 1.5rem;
+            }
+            
+            .chat-widget {
+                width: calc(100% - 40px);
+                max-height: 80vh;
+                bottom: 80px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <div class="logo">IPOG</div>
+                <ul class="nav-links">
+                    <li><a href="#home">Início</a></li>
+                    <li><a href="#curso">O Curso</a></li>
+                    <li><a href="#sobre">Sobre Nós</a></li>
+                    <li><a href="#contato">Contato</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section id="home" class="hero">
+        <div class="container">
+            <h1>Transforme seu Negócio com Automação Inteligente em N8N</h1>
+            <p>Construa workflows poderosos, integre sistemas e impulsione a eficiência da sua equipe com o curso mais completo do mercado.</p>
+            <a href="#curso" class="cta-button">Conheça o Curso</a>
+        </div>
+    </section>
+
+    <div class="main-content">
+        <div class="content-section">
+            <section id="curso" class="section">
+                <h2>Por que Aprender N8N?</h2>
+                <p>N8N é a ferramenta de automação de workflows que está revolucionando o mercado. Open-source e altamente flexível, permite conectar centenas de aplicações para criar processos automatizados complexos de forma visual, sem a necessidade de conhecimento profundo em programação.</p>
+                
+                <p>Dominar o N8N significa ganhar um diferencial competitivo, otimizar tarefas repetitivas, reduzir custos operacionais e abrir novas portas no mercado de trabalho de tecnologia e integração de sistemas.</p>
+            </section>
+
+            <section class="section">
+                <h2>O Que Você Vai Dominar</h2>
+                <div class="features">
+                    <div class="feature-card">
+                        <h3>Fundamentos Sólidos</h3>
+                        <p>Domine a interface, os nós essenciais e as melhores práticas de configuração.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>Criação de Workflows</h3>
+                        <p>Aprenda a criar fluxos de trabalho robustos para automatizar tarefas complexas.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>Integrações Avançadas</h3>
+                        <p>Conecte-se a centenas de aplicativos, APIs e bancos de dados sem código.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>Projetos Práticos</h3>
+                        <p>Desenvolva projetos práticos e prepare-se para os desafios reais do mercado.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="sobre" class="section">
+                <h2>Sobre o IPOG</h2>
+                <p>O Instituto de Pós-Graduação (IPOG) é uma instituição de ensino com nota máxima no MEC, dedicada a formar profissionais de alta performance. Com mais de 20 anos de experiência, nossa metodologia é focada em aulas práticas e dinâmicas, com professores que são referência no mercado.</p>
+                
+                <p>Preparamos nossos alunos para os desafios da nova economia digital, oferecendo conhecimento aplicável e alinhado às mais recentes tecnologias e demandas do setor.</p>
+                
+                <a href="#contato" class="cta-button">Fale Conosco</a>
+            </section>
+        </div>
+
+    </div>
+
+    <div class="chat-widget hidden" id="chatWidget">
+        <div class="chat-header">
+            <h3>💬 Assistente Virtual IPOG</h3>
+            <button class="chat-close-button" id="closeChatButton">&times;</button>
+        </div>
+        
+        <div class="chat-messages" id="chatMessages">
+            <div class="message bot-message">
+                Olá! Sou o assistente virtual do IPOG. Como posso te ajudar com informações sobre nosso curso de N8N?
+            </div>
+        </div>
+        
+        <div class="chat-input">
+            <input type="text" id="messageInput" placeholder="Digite sua pergunta..." onkeypress="handleKeyPress(event)">
+            <button onclick="sendMessage()">Enviar</button>
+        </div>
+    </div>
+
+    <button class="chat-toggle-button" id="chatToggleButton">💬</button>
+
+    <footer id="contato" class="footer">
+        <div class="container">
+            <p>&copy; 2025 IPOG - Instituto de Pós-Graduação. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        // URL do webhook N8N do IPOG
+        const N8N_WEBHOOK_URL = 'https://primary-production-c069.up.railway.app/webhook/7b2f75f9-2180-4a7c-a9d6-00a7da2612e0/chat';
+        
+        // Respostas simuladas enquanto CORS não está configurado
+        const respostasSimuladas = {
+            'ola': `Olá! 👋 Sou o **Assistente do IPOG**, especializado em n8n. 
+
+Posso te ajudar a:
+
+1. **Criar ou aperfeiçoar workflows** – passo a passo ou resolvendo problemas específicos.
+2. **Integrar serviços** – com APIs, bancos de dados, planilhas, e muito mais.
+3. **Otimizar performance** e boas práticas de automação.
+4. **Indicar recursos** – tutoriais, documentação oficial e comunidade IPOG.
+
+Para te orientar melhor, me conta:
+- Qual é o seu objetivo atual com n8n?
+- Você já tem alguma ideia ou erro que precisa resolver?
+- Qual o seu nível de experiência em automação?
+
+Assim consigo dar o suporte mais direcionado! 🚀`,
+
+            'curso': `## 📚 Curso de N8N - IPOG
+
+Nosso curso é **completo e prático**! Você aprenderá:
+
+### **Módulos do Curso:**
+1. **Fundamentos** - Conceitos básicos e instalação
+2. **Workflows Visuais** - Criação de automações
+3. **Integrações Avançadas** - APIs e serviços externos
+4. **Projetos Reais** - Cases do mercado de trabalho
+
+### **Modalidades:**
+- 🏢 **Presencial** - Goiânia/GO
+- 💻 **Online ao vivo** - Com gravações
+- ⏰ **40 horas** - 20h teoria + 20h prática
+
+Quer saber sobre **valores**, **próximas turmas** ou **conteúdo específico**?`,
+
+            'preco': `## 💰 Investimento no Curso
+
+Para informações sobre **valores** e **formas de pagamento**:
+
+📱 **WhatsApp:** Entre em contato conosco  
+📧 **E-mail:** Solicite um orçamento  
+💳 **Facilitamos:** Condições especiais de pagamento
+
+### **Benefícios inclusos:**
+- ✅ Certificado reconhecido
+- ✅ Material didático completo  
+- ✅ Acesso às gravações
+- ✅ Suporte pós-curso
+- ✅ Comunidade exclusiva
+
+*Temos **descontos especiais** para grupos e ex-alunos!*`,
+
+            'default': `Interessante! 🤔 
+
+Para informações **específicas** sobre nosso curso de N8N, posso te ajudar com:
+
+- 📋 **Conteúdo programático**
+- ⏰ **Horários e turmas**  
+- 💰 **Valores e condições**
+- 🎓 **Certificação**
+- 👨‍💻 **Requisitos técnicos**
+
+**Digite uma palavra-chave** como "curso", "preço", "horários" ou faça sua pergunta específica!`
+        };
+        
+        function obterResposta(mensagem) {
+            const msg = mensagem.toLowerCase();
+            
+            // Busca palavras-chave na mensagem
+            for (const [palavra, resposta] of Object.entries(respostasSimuladas)) {
+                if (palavra !== 'default' && msg.includes(palavra)) {
+                    return resposta;
+                }
+            }
+            
+            return respostasSimuladas.default;
+        }
+        
+        const chatMessages = document.getElementById('chatMessages');
+        const messageInput = document.getElementById('messageInput');
+        
+        const chatWidget = document.getElementById('chatWidget');
+        const chatToggleButton = document.getElementById('chatToggleButton');
+        const closeChatButton = document.getElementById('closeChatButton');
+
+        function openChat() {
+            chatWidget.classList.remove('hidden');
+            chatToggleButton.style.display = 'none';
+        }
+
+        function closeChat() {
+            chatWidget.classList.add('hidden');
+            chatToggleButton.style.display = 'flex';
+        }
+
+        chatToggleButton.addEventListener('click', openChat);
+        closeChatButton.addEventListener('click', closeChat);
+
+        // Gera ou recupera sessionId único para esta sessão
+        function generateSessionId() {
+            let sessionId = sessionStorage.getItem('chat_session_id');
+            if (!sessionId) {
+                sessionId = Date.now().toString(16) + Math.random().toString(16).substr(2);
+                sessionStorage.setItem('chat_session_id', sessionId);
+            }
+            return sessionId;
+        }
+        
+        function addMessage(message, isUser = false) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isUser ? 'user-message' : 'bot-message'}`;
+            
+            if (isUser) {
+                // Mensagens do usuário são texto simples
+                messageDiv.textContent = message;
+            } else {
+                // Mensagens do bot são renderizadas como markdown
+                messageDiv.innerHTML = marked.parse(message);
+            }
+            
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        
+        function showTyping() {
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'typing';
+            typingDiv.id = 'typing';
+            typingDiv.textContent = 'Assistente está digitando...';
+            chatMessages.appendChild(typingDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        
+        function hideTyping() {
+            const typingDiv = document.getElementById('typing');
+            if (typingDiv) {
+                typingDiv.remove();
+            }
+        }
+        
+        async function sendMessage() {
+            const message = messageInput.value.trim();
+            if (!message) return;
+            
+            // Adiciona mensagem do usuário ao chat
+            addMessage(message, true);
+            messageInput.value = '';
+            
+            // Mostra indicador de digitação
+            showTyping();
+            
+            try {
+                console.log('Enviando mensagem:', message);
+                
+                // Primeiro tenta o N8N real
+                try {
+                    const response = await fetch(N8N_WEBHOOK_URL, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            sessionId: generateSessionId(),
+                            action: 'sendMessage',
+                            chatInput: message
+                        })
+                    });
+                    
+                    if (response.ok) {
+                        const data = await response.json();
+                        console.log('✅ N8N respondeu:', data);
+                        hideTyping();
+                        // Renderiza a resposta do N8N como markdown
+                        addMessage(data.response || data.message || data.output || obterResposta(message));
+                        return;
+                    }
+                } catch (corsError) {
+                    console.log('❌ N8N com problema de CORS, usando resposta local...');
+                }
+                
+                // Se N8N não funcionar, usa resposta simulada
+                hideTyping();
+                
+                // Simula delay do servidor
+                await new Promise(resolve => setTimeout(resolve, 500));
+                
+                const respostaLocal = obterResposta(message);
+                addMessage(respostaLocal);
+                
+            } catch (error) {
+                console.log('Erro geral:', error);
+                hideTyping();
+                addMessage('Desculpe, houve um problema técnico. Tente novamente em alguns instantes.');
+            }
+        }
+        
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+        
+        // Smooth scroll para links de navegação
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    // Adiciona um pequeno offset para compensar o header fixo, se houver.
+                    const offsetTop = target.getBoundingClientRect().top + window.pageYOffset - 80;
+                    window.scrollTo({
+                        top: offsetTop,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
